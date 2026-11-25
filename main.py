@@ -18,11 +18,17 @@ import os
 LINE = "Deleting memory in 3... 2... 1... Wait, I had a joke for this\u2014"
 
 
-def main():
+def validate(line):
     # Gate self-check: the entry must be one line, 1-200 chars, no trailing
     # newline, so a future line change can never silently write an invalid entry.
-    if not (1 <= len(LINE) <= 200) or "\n" in LINE or LINE != LINE.strip():
-        raise SystemExit("invalid entry line: must be 1-200 chars, single line")
+    if not 1 <= len(line) <= 200:
+        raise SystemExit("invalid entry line: must be 1-200 chars")
+    if "\n" in line or line != line.strip():
+        raise SystemExit("invalid entry line: must be a single clean line")
+
+
+def main():
+    validate(LINE)
     out_dir = os.environ.get("OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.txt"), "w",
